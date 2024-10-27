@@ -2,15 +2,15 @@
 using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using P3AddNewFunctionalityDotNetCore.Models.Repositories;
-using P3AddNewFunctionalityDotNetCore.Models.Services;
-using P3AddNewFunctionalityDotNetCore.Models;
 using Microsoft.AspNetCore.Identity;
 using P3AddNewFunctionalityDotNetCore.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using P3AddNewFunctionalityDotNetCore;
 using System.Linq;
+using P3AddNewFunctionalityDotNetCore.Infrastructure.Repositories;
+using P3AddNewFunctionalityDotNetCore.Data.Models;
+using P3AddNewFunctionalityDotNetCore.Application.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,7 +18,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddLocalization(opts => { opts.ResourcesPath = "Resources"; });
-builder.Services.AddSingleton<ICart, Cart>();
+builder.Services.AddSingleton<ICartService, CartService>();
 builder.Services.AddSingleton<ILanguageService, LanguageService>();
 builder.Services.AddTransient<IProductService, ProductService>();
 builder.Services.AddTransient<IProductRepository, ProductRepository>();

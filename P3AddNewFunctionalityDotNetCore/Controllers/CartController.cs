@@ -1,17 +1,16 @@
 ﻿using System.Linq;
 using Microsoft.AspNetCore.Mvc;
-using P3AddNewFunctionalityDotNetCore.Models;
-using P3AddNewFunctionalityDotNetCore.Models.Entities;
-using P3AddNewFunctionalityDotNetCore.Models.Services;
+using P3AddNewFunctionalityDotNetCore.Application.Services;
+using P3AddNewFunctionalityDotNetCore.Data.Models.Entities;
 
 namespace P3AddNewFunctionalityDotNetCore.Controllers
 {
     public class CartController : Controller
     {
-        private readonly ICart _cart;
+        private readonly ICartService _cart;
         private readonly IProductService _productService;
 
-        public CartController(ICart cart, IProductService productService)
+        public CartController(ICartService cart, IProductService productService)
         {
             _cart = cart;
             _productService = productService;
@@ -19,7 +18,7 @@ namespace P3AddNewFunctionalityDotNetCore.Controllers
 
         public ViewResult Index()
         {
-            Cart cart = _cart as Cart;
+            CartService cart = _cart as CartService;
             return View(cart);
         }
 

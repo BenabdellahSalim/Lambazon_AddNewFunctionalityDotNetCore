@@ -1,15 +1,15 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using P3AddNewFunctionalityDotNetCore.Models;
+using P3AddNewFunctionalityDotNetCore.Application.Services;
 
 namespace P3AddNewFunctionalityDotNetCore.Components
 {
     public class CartSummaryViewComponent : ViewComponent
     {
-        private readonly Cart _cart;
+        private readonly CartService _cart;
 
-        public CartSummaryViewComponent(ICart cart)
+        public CartSummaryViewComponent(ICartService cart)
         {
-            _cart = cart as Cart;
+            _cart = cart as CartService;
         }
 
         public IViewComponentResult Invoke()

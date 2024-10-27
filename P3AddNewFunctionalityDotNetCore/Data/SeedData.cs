@@ -3,7 +3,7 @@ using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using P3AddNewFunctionalityDotNetCore.Models.Entities;
+using P3AddNewFunctionalityDotNetCore.Data.Models.Entities;
 
 namespace P3AddNewFunctionalityDotNetCore.Data
 {

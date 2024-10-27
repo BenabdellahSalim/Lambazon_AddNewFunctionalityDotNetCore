@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using P3AddNewFunctionalityDotNetCore.Models.Services;
+using P3AddNewFunctionalityDotNetCore.Application.Services;
 
 namespace P3AddNewFunctionalityDotNetCore.Components
 {
