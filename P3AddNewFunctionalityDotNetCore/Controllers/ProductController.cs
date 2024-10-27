@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using P3AddNewFunctionalityDotNetCore.Models.Services;
-using P3AddNewFunctionalityDotNetCore.Models.ViewModels;
+using P3AddNewFunctionalityDotNetCore.Application.Services;
+using P3AddNewFunctionalityDotNetCore.Data.Models.ViewModels;
 using System.Collections.Generic;
 using System.Linq;
 
