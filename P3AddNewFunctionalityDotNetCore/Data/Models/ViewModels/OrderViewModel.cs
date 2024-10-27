@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
-using P3AddNewFunctionalityDotNetCore.Application.Services;
+using P3AddNewFunctionalityDotNetCore.Data.Models.Entities;
 
 namespace P3AddNewFunctionalityDotNetCore.Data.Models.ViewModels
 {

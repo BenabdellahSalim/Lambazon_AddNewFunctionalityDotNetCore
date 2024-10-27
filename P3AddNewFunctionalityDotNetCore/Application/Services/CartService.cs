@@ -7,6 +7,7 @@ namespace P3AddNewFunctionalityDotNetCore.Application.Services
     public class CartService : ICartService
     {
         private readonly List<CartLine> _cartLines;
+        public IEnumerable<CartLine> Lines => _cartLines;
 
         public CartService()
         {
@@ -41,13 +42,5 @@ namespace P3AddNewFunctionalityDotNetCore.Application.Services
 
         public void Clear() => _cartLines.Clear();
 
-        public IEnumerable<CartLine> Lines => _cartLines;
-    }
-
-    public class CartLine
-    {
-        public int OrderLineId { get; set; }
-        public Product Product { get; set; }
-        public int Quantity { get; set; }
     }
 }
