@@ -1,5 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
@@ -8,9 +8,10 @@ using P3AddNewFunctionalityDotNetCore.Data.Models.Entities;
 using P3AddNewFunctionalityDotNetCore.Data.Models.ViewModels;
 using P3AddNewFunctionalityDotNetCore.Infrastructure.Repositories;
 
+
 namespace P3AddNewFunctionalityDotNetCore.Application.Services
 {
-    public class ProductService : IProductService
+    public class ProductService : ValidationAttribute, IProductService
     {
         private readonly ICartService _cart;
         private readonly IProductRepository _productRepository;
@@ -25,14 +26,15 @@ namespace P3AddNewFunctionalityDotNetCore.Application.Services
             _orderRepository = orderRepository;
             _localizer = localizer;
         }
+
         public List<ProductViewModel> GetAllProductsViewModel()
         {
 
-            IEnumerable<Product> productEntities = GetAllProducts();
+            List<Product> productEntities = GetAllProducts();
             return MapToViewModel(productEntities);
         }
 
-        private static List<ProductViewModel> MapToViewModel(IEnumerable<Product> productEntities)
+        private static List<ProductViewModel> MapToViewModel(List<Product> productEntities)
         {
             List<ProductViewModel> products = new List<ProductViewModel>();
             foreach (Product product in productEntities)
@@ -66,7 +68,12 @@ namespace P3AddNewFunctionalityDotNetCore.Application.Services
 
         public Product GetProductById(int id)
         {
-            List<Product> products = GetAllProducts().ToList();
+
+            List<Product> products = GetAllProducts()?.ToList();
+            if (products == null)
+            {
+                return null;
+            }
             return products.Find(p => p.Id == id);
         }
 
@@ -82,54 +89,38 @@ namespace P3AddNewFunctionalityDotNetCore.Application.Services
             return products;
         }
         public void UpdateProductQuantities()
-        {
-            CartService cart = (CartService)_cart;
-            foreach (CartLine line in cart.Lines)
+        { 
+            foreach (CartLine line in _cart.Lines )
             {
                 _productRepository.UpdateProductStocks(line.Product.Id, line.Quantity);
             }
         }
 
-        // TODO this is an example method, remove it and perform model validation using data annotations
         public List<string> CheckProductModelErrors(ProductViewModel product)
         {
-            List<string> modelErrors = new List<string>();
-            if (product.Name == null || string.IsNullOrWhiteSpace(product.Name))
+            var validationContext = new ValidationContext(product, serviceProvider: null, items: null);
+            var validationResults = new List<ValidationResult>();
+            
+            bool isValid = Validator.TryValidateObject(product, validationContext, validationResults, validateAllProperties: true);
+            
+            var errors = new List<string>();
+            
+            if (!isValid)
             {
-                modelErrors.Add(_localizer["MissingName"]);
+                foreach (var validationResult in validationResults)
+                {
+                    if (_localizer != null && !string.IsNullOrEmpty(validationResult.ErrorMessage))
+                    {
+                        var localizedMessage = _localizer[validationResult.ErrorMessage];
+                        errors.Add(localizedMessage ?? validationResult.ErrorMessage);
+                    }
+                    else
+                    {
+                        errors.Add(validationResult.ErrorMessage);
+                    }
+                }
             }
-
-            if (product.Price == null || string.IsNullOrWhiteSpace(product.Price))
-            {
-                modelErrors.Add(_localizer["MissingPrice"]);
-            }
-
-            if (!double.TryParse(product.Price, out double pc))
-            {
-                modelErrors.Add(_localizer["PriceNotANumber"]);
-            }
-            else
-            {
-                if (pc <= 0)
-                    modelErrors.Add(_localizer["PriceNotGreaterThanZero"]);
-            }
-
-            if (product.Stock == null || string.IsNullOrWhiteSpace(product.Stock))
-            {
-                modelErrors.Add(_localizer["MissingQuantity"]);
-            }
-
-            if (!int.TryParse(product.Stock, out int qt))
-            {
-                modelErrors.Add(_localizer["StockNotAnInteger"]);
-            }
-            else
-            {
-                if (qt <= 0)
-                    modelErrors.Add(_localizer["StockNotGreaterThanZero"]);
-            }
-
-            return modelErrors;
+            return errors;
         }
 
         public void SaveProduct(ProductViewModel product)
@@ -138,7 +129,7 @@ namespace P3AddNewFunctionalityDotNetCore.Application.Services
             _productRepository.SaveProduct(productToAdd);
         }
 
-        private static Product MapToProductEntity(ProductViewModel product)
+        public Product MapToProductEntity(ProductViewModel product)
         {
             Product productEntity = new Product
             {
@@ -153,11 +144,11 @@ namespace P3AddNewFunctionalityDotNetCore.Application.Services
 
         public void DeleteProduct(int id)
         {
-            // TODO what happens if a product has been added to a cart and has been later removed from the inventory ?
-            // delete the product form the cart by using the specific method
-            // => the choice is up to the student
-            _cart.RemoveLine(GetProductById(id));
-
+            var result = _cart.Lines.FirstOrDefault(e => e.Product.Id == id);
+            if (result != null)
+            {
+                _cart.RemoveLine(GetProductById(id));
+            }
             _productRepository.DeleteProduct(id);
         }
     }

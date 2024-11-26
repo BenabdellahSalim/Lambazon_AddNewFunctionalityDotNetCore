@@ -7,6 +7,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "P3AddNewFunctionalityDotNet
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "P3AddNewFunctionalityDotNetCore", "P3AddNewFunctionalityDotNetCore\P3AddNewFunctionalityDotNetCore.csproj", "{752FB11B-71BE-4ECC-923A-997D50794E8B}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{8036CD86-9A22-42F4-9995-63268226CE1B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{3362FA46-DD6C-45C3-9747-076E7F5C8BF8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,6 +28,10 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{7844011C-847B-4894-B918-5FB030BAB3DF} = {3362FA46-DD6C-45C3-9747-076E7F5C8BF8}
+		{752FB11B-71BE-4ECC-923A-997D50794E8B} = {8036CD86-9A22-42F4-9995-63268226CE1B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B49DD4D4-E98F-4780-B8F9-9E4B5F1A0A9C}

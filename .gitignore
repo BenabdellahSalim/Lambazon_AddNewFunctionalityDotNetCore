@@ -259,3 +259,5 @@ paket-files/
 # Python Tools for Visual Studio (PTVS)
 __pycache__/
 *.pyc
+/P3AddNewFunctionalityDotNetCore.Tests/ProductServiceTests.cs
+/P3AddNewFunctionalityDotNetCore.Tests/P3AddNewFunctionalityDotNetCore.Tests.csproj

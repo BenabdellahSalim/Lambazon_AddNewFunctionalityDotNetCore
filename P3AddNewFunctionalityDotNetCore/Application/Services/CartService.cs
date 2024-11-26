@@ -6,8 +6,8 @@ namespace P3AddNewFunctionalityDotNetCore.Application.Services
 {
     public class CartService : ICartService
     {
-        private readonly List<CartLine> _cartLines;
-        public IEnumerable<CartLine> Lines => _cartLines;
+        public readonly List<CartLine> _cartLines;
+       public virtual IEnumerable<CartLine> Lines => _cartLines;
 
         public CartService()
         {
