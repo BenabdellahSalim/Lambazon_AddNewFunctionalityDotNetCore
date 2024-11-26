@@ -9,29 +9,29 @@ namespace P3AddNewFunctionalityDotNetCore.Infrastructure.Repositories
 {
     public class ProductRepository : IProductRepository
     {
-        private static P3Referential _context;
+        public  P3Referential Context;
 
         public ProductRepository(P3Referential context)
         {
-            _context = context;
+            Context = context;
         }
         public async Task<Product> GetProduct(int id)
         {
-            var product = await _context.Product.SingleOrDefaultAsync(m => m.Id == id);
+            var product = await Context.Product.SingleOrDefaultAsync(m => m.Id == id);
             return product;
         }
 
         public async Task<IList<Product>> GetProduct()
         {
-            var products = await _context.Product.ToListAsync();
+            var products = await Context.Product.ToListAsync();
             return products;
         }
         /// <summary>
         /// Get all products from the inventory
         /// </summary>
-        public IEnumerable<Product> GetAllProducts()
+        public List<Product> GetAllProducts()
         {
-            IEnumerable<Product> productEntities = _context.Product.Where(p => p.Id > 0);
+            IEnumerable<Product> productEntities = Context.Product.Where(p => p.Id > 0);
             return productEntities.ToList();
         }
 
@@ -40,15 +40,15 @@ namespace P3AddNewFunctionalityDotNetCore.Infrastructure.Repositories
         /// </summary>
         public void UpdateProductStocks(int id, int quantityToRemove)
         {
-            Product product = _context.Product.First(p => p.Id == id);
+            var product = Context.Product.First(p => p.Id == id);
             product.Quantity = product.Quantity - quantityToRemove;
 
             if (product.Quantity == 0)
-                _context.Product.Remove(product);
+                Context.Product.Remove(product);
             else
             {
-                _context.Product.Update(product);
-                _context.SaveChanges();
+                Context.Product.Update(product);
+                Context.SaveChanges();
             }
         }
 
@@ -58,8 +58,8 @@ namespace P3AddNewFunctionalityDotNetCore.Infrastructure.Repositories
             {
 
 
-                _context.Product.Add(product);
-                _context.SaveChanges();
+                Context.Product.Add(product);
+                Context.SaveChanges();
             }
         }
 
@@ -67,11 +67,11 @@ namespace P3AddNewFunctionalityDotNetCore.Infrastructure.Repositories
 
         public void DeleteProduct(int id)
         {
-            Product product = _context.Product.First(p => p.Id == id);
+            Product product = Context.Product.First(p => p.Id == id);
             if (product != null)
             {
-                _context.Product.Remove(product);
-                _context.SaveChanges();
+                Context.Product.Remove(product);
+                Context.SaveChanges();
             }
         }
     }
