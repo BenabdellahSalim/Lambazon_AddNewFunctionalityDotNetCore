@@ -1,14 +1,25 @@
 ﻿using Xunit;
+using Moq;
 using System.Collections.Generic;
 using Microsoft.Extensions.Localization;
 using P3AddNewFunctionalityDotNetCore.Application.Services;
 using P3AddNewFunctionalityDotNetCore.Data.Models.ViewModels;
 using P3AddNewFunctionalityDotNetCore.Infrastructure.Repositories;
 using NSubstitute;
+
 using P3AddNewFunctionalityDotNetCore.Data.Models.Entities;
 using System.Threading.Tasks;
 using NSubstitute.ReceivedExtensions;
 using FluentAssertions;
+using Microsoft.AspNetCore.Cors.Infrastructure;
+using P3AddNewFunctionalityDotNetCore.Data.Models.Entities;
+using System.Linq;
+using FluentAssertions;
+using System.Threading.Tasks;
+using System.Numerics;
+using FluentAssertions.Common;
+using NSubstitute.ReceivedExtensions;
+using P3AddNewFunctionalityDotNetCore.Data;
 
 namespace P3AddNewFunctionalityDotNetCore.Tests.Application.Services
 {
@@ -39,7 +50,8 @@ namespace P3AddNewFunctionalityDotNetCore.Tests.Application.Services
             // Arrange
             var product = new ProductViewModel
             {
-                Name = null, 
+
+                Name = "", 
                 Price = "-5", 
                 Stock = "abc" 
             };
@@ -69,6 +81,7 @@ namespace P3AddNewFunctionalityDotNetCore.Tests.Application.Services
 
             // Assert
             Assert.Empty(errors);
+
         }
 
         [Theory]
@@ -122,7 +135,7 @@ namespace P3AddNewFunctionalityDotNetCore.Tests.Application.Services
                 Price = 20
             };
             _cartservice.Lines.Returns(new List<CartLine>());
-           
+
             // Act
             _sut.DeleteProduct(productId);
             // Assert

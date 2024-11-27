@@ -6,7 +6,7 @@ namespace P3AddNewFunctionalityDotNetCore.Infrastructure.Repositories
 {
     public interface IProductRepository
     {
-        IEnumerable<Product> GetAllProducts();
+        List<Product> GetAllProducts();
         void UpdateProductStocks(int productId, int quantityToRemove);
         void SaveProduct(Product product);
         void DeleteProduct(int id);
