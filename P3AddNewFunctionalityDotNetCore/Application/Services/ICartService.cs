@@ -5,6 +5,9 @@ namespace P3AddNewFunctionalityDotNetCore.Application.Services
 {
     public interface ICartService
     {
+        public IEnumerable<CartLine>  Lines { get; }
+
+
         IEnumerable<CartLine> Lines { get; }
         void AddItem(Product product, int quantity);
 

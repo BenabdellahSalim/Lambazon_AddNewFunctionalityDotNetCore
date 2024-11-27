@@ -6,6 +6,11 @@ using P3AddNewFunctionalityDotNetCore.Application.Services;
 using P3AddNewFunctionalityDotNetCore.Data.Models.ViewModels;
 using P3AddNewFunctionalityDotNetCore.Infrastructure.Repositories;
 using NSubstitute;
+
+using P3AddNewFunctionalityDotNetCore.Data.Models.Entities;
+using System.Threading.Tasks;
+using NSubstitute.ReceivedExtensions;
+using FluentAssertions;
 using Microsoft.AspNetCore.Cors.Infrastructure;
 using P3AddNewFunctionalityDotNetCore.Data.Models.Entities;
 using System.Linq;
@@ -45,6 +50,7 @@ namespace P3AddNewFunctionalityDotNetCore.Tests.Application.Services
             // Arrange
             var product = new ProductViewModel
             {
+
                 Name = "", 
                 Price = "-5", 
                 Stock = "abc" 
@@ -75,7 +81,7 @@ namespace P3AddNewFunctionalityDotNetCore.Tests.Application.Services
 
             // Assert
             Assert.Empty(errors);
-            errors.Should().BeEmpty();
+
         }
 
         [Theory]
@@ -129,6 +135,7 @@ namespace P3AddNewFunctionalityDotNetCore.Tests.Application.Services
                 Price = 20
             };
             _cartservice.Lines.Returns(new List<CartLine>());
+
             // Act
             _sut.DeleteProduct(productId);
             // Assert
