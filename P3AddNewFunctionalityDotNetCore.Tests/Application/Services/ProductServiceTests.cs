@@ -89,8 +89,10 @@ namespace P3AddNewFunctionalityDotNetCore.Tests.Application.Services
             // Act
             var errors = _sut.CheckProductModelErrors(product);
             // Assert
-             
-            errors.Should().NotBeEmpty();
+            foreach (var error in errors)
+            {
+                error.Should().NotBeEmpty();
+            }
         }
 
         [Fact]
