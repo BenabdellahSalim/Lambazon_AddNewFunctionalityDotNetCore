@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using P3AddNewFunctionalityDotNetCore.Data.Models.ViewModels;
 using P3AddNewFunctionalityDotNetCore.Application.Services;
 using P3AddNewFunctionalityDotNetCore.Controllers;
-using System.Linq;
 
 public class ProductControllerTests
 {
