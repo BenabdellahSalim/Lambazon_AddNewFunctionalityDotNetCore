@@ -10,7 +10,7 @@ using P3AddNewFunctionalityDotNetCore.Infrastructure.Repositories;
 
 namespace P3AddNewFunctionalityDotNetCore.TestsIntegration.Controller
 {
-    public class ProductControllerIntegrationTests : DataBaseInMemory
+    public class ProductControllerIntegrationTests 
     { 
         public readonly IStringLocalizer<ProductService> _stringLocalizer;
         private P3Referential dbContext;
@@ -20,17 +20,17 @@ namespace P3AddNewFunctionalityDotNetCore.TestsIntegration.Controller
         private ProductService productService;
         private LanguageService languageService;
 
-        //public P3Referential GetInMemoryDbContext()
-        //{
-        //    var options = new DbContextOptionsBuilder<P3Referential>()
-        //        .UseInMemoryDatabase(databaseName: "TestDatabase")
-        //        .Options;
+        public P3Referential GetInMemoryDbContext()
+        {
+            var options = new DbContextOptionsBuilder<P3Referential>()
+                .UseInMemoryDatabase(databaseName: "TestDatabase")
+                .Options;
 
-        //    var context = new P3Referential(options);
-        //    context.Database.EnsureCreated(); 
-        //    return context;
-        //}
-
+            var context = new P3Referential(options);
+            context.Database
+                .EnsureCreated();
+            return context;
+        }
         public ProductControllerIntegrationTests()
         {
             dbContext = GetInMemoryDbContext(); 
@@ -40,12 +40,42 @@ namespace P3AddNewFunctionalityDotNetCore.TestsIntegration.Controller
             productService = new ProductService(_cart, productRepository, order, _stringLocalizer);
             languageService = new LanguageService(); 
         }
+        [Fact]
+        public void DeleteProduct_ShouldRedirectToAdmin2()
+        {
+            // Arrange
+            var controller = new ProductController(productService, languageService);
+            var product = new ProductViewModel
+            {
+                Id = 1,
+                Name = "Test2 product",
+                Stock = "1522",
+                Price = "52"
+            };
+            // Act
+            var result = controller.Create(product) as RedirectToActionResult;
+            // Assert
+            Assert.NotNull(result);
+            Assert.Equal("Admin", result.ActionName);
 
+            var addedProduct = dbContext.Product.FirstOrDefault(p => p.Id == 1);
+            Assert.NotNull(addedProduct);
+            Assert.Equal("Test2 product", addedProduct.Name);
+
+            var delProduct = controller.DeleteProduct(1) as RedirectToActionResult;
+            Assert.NotNull(delProduct);
+            Assert.Equal("Admin", delProduct.ActionName);
+
+            var deletedProduct = dbContext.Product.FirstOrDefault(p => p.Id == 1);
+            Assert.Null(deletedProduct);
+
+            var productControllerSubstitute = Substitute.For<ProductControllerIntegrationTests>();
+            productControllerSubstitute.Received(2).GetInMemoryDbContext();
+        }
         [Fact]
         public void Create_ValidProduct_ShouldAddProductToDatabase()
         {
             //Arrange
-//            dbContext.Database.EnsureDeleted();
             dbContext.Database.EnsureDeletedAsync();
             dbContext.Database.EnsureCreatedAsync();
             var controller = new ProductController(productService, languageService);
@@ -100,38 +130,7 @@ namespace P3AddNewFunctionalityDotNetCore.TestsIntegration.Controller
             dbContext.SaveChangesAsync();
         }
 
-        [Fact]
-        public void DeleteProduct_ShouldRedirectToAdmin2()
-        {
-            // Arrange
-            var controller = new ProductController(productService, languageService);
-            var product = new ProductViewModel
-            {
-                Id = 1,
-                Name = "Test2 product",
-                Stock = "1522",
-                Price = "52"
-            };
-            // Act
-            var result = controller.Create(product) as RedirectToActionResult;
-            // Assert
-            Assert.NotNull(result);
-            Assert.Equal("Admin", result.ActionName);
-
-            var addedProduct = dbContext.Product.FirstOrDefault(p => p.Id == 1);
-            Assert.NotNull(addedProduct); 
-            Assert.Equal("Test2 product", addedProduct.Name);
-
-            var delProduct = controller.DeleteProduct(1) as RedirectToActionResult;
-            Assert.NotNull(delProduct);
-            Assert.Equal("Admin", delProduct.ActionName);
-
-            var deletedProduct = dbContext.Product.FirstOrDefault(p => p.Id == 1);
-            Assert.Null(deletedProduct); 
-
-            var productControllerSubstitute = Substitute.For<ProductControllerIntegrationTests>();
-            productControllerSubstitute.Received(2).GetInMemoryDbContext();
-        }
+       
 
     }
 }

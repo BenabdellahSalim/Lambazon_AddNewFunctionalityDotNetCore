@@ -19,20 +19,6 @@ namespace P3AddNewFunctionalityDotNetCore.TestsIntegration.Application.Services
         private ProductService productService;
         private LanguageService languageService;
 
-
-        //public P3Referential GetInMemoryDbContext()
-        //{
-        //    var options = new DbContextOptionsBuilder<P3Referential>()
-        //        .UseInMemoryDatabase(databaseName: "TestDatabase")
-        //        .Options;
-
-        //    var context = new P3Referential(options);
-        //    context.Database
-        //        .EnsureCreated();
-        //    return context;
-        //}
-
-
         public ProductServiceIntegrationTests()
         {
             dbContext = GetInMemoryDbContext();
@@ -61,6 +47,7 @@ namespace P3AddNewFunctionalityDotNetCore.TestsIntegration.Application.Services
             Assert.NotNull(savedProduct);
             Assert.Equal("New Product", savedProduct.Name);
             Assert.Equal(5, savedProduct.Price);
+            
             dbContext.Database.EnsureDeletedAsync();
             dbContext.SaveChangesAsync();
 
@@ -70,9 +57,6 @@ namespace P3AddNewFunctionalityDotNetCore.TestsIntegration.Application.Services
         public void Delete_ShouldDeleteProductFromStock()
         {
             // Arrange
-          
-
-
             var product = new Product { Id = 1, Name = "Test Product", Price = 10, Quantity = 2 };
             dbContext.Product.Add(product);
             dbContext.SaveChangesAsync();
