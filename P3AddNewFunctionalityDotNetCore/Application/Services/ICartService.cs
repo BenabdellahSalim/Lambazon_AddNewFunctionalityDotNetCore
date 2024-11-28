@@ -7,8 +7,6 @@ namespace P3AddNewFunctionalityDotNetCore.Application.Services
     {
         public IEnumerable<CartLine>  Lines { get; }
 
-
-        IEnumerable<CartLine> Lines { get; }
         void AddItem(Product product, int quantity);
 
         void RemoveLine(Product product);

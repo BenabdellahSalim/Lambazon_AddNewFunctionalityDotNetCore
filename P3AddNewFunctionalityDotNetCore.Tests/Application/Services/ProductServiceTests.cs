@@ -1,30 +1,16 @@
 ﻿using Xunit;
-using Moq;
 using System.Collections.Generic;
 using Microsoft.Extensions.Localization;
 using P3AddNewFunctionalityDotNetCore.Application.Services;
 using P3AddNewFunctionalityDotNetCore.Data.Models.ViewModels;
 using P3AddNewFunctionalityDotNetCore.Infrastructure.Repositories;
 using NSubstitute;
-
 using P3AddNewFunctionalityDotNetCore.Data.Models.Entities;
 using System.Threading.Tasks;
-using NSubstitute.ReceivedExtensions;
 using FluentAssertions;
-using Microsoft.AspNetCore.Cors.Infrastructure;
-using P3AddNewFunctionalityDotNetCore.Data.Models.Entities;
-using System.Linq;
-using FluentAssertions;
-using System.Threading.Tasks;
-using System.Numerics;
-using FluentAssertions.Common;
-using NSubstitute.ReceivedExtensions;
-using P3AddNewFunctionalityDotNetCore.Data;
 
 namespace P3AddNewFunctionalityDotNetCore.Tests.Application.Services
 {
-
-
     public class ProductServiceTeste
     {
         public readonly ProductService _sut;
@@ -81,7 +67,6 @@ namespace P3AddNewFunctionalityDotNetCore.Tests.Application.Services
 
             // Assert
             Assert.Empty(errors);
-
         }
 
         [Theory]
